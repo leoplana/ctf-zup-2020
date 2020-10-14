@@ -1,7 +1,8 @@
 # :triangular_flag_on_post: CTF Zup 2020  Write up 1#
 
 
-Este documento contém todas as respostas (passo a passo) e ferramentas utilizadas para resolução dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :rofl:
+Este documento contém todas as respostas (passo a passo) e ferramentas utilizadas para resolução 
+dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :rofl:
 
 ### Categorias
 1. [Android]()
@@ -44,4 +45,18 @@ Este documento contém todas as respostas (passo a passo) e ferramentas utilizad
     - Potatoe is good
     - Server status (SSRF)
     - Unsafe Entity (XXE)
+
+## Android :iphone:
+
+### Debug me
+
+## Criptografia :key:
+
+## Forense :mag:
+
+## Misc :earth_americas:
+
+## Pwns :computer:
+
+## Aplicações Web :globe_with_meridians:
 
