@@ -9,14 +9,14 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Debug](#debug-me)
     - [Decode](#decode)
     - [Db leak](#db-leak)
-    - Export
-    - File access
+    - [Export](#export)
+    - [File access](#file-access)
     - Frida1
-    - Intercept
-    - Resources
-    - Shared preferences
+    - [Intercept](#intercept)
+    - [Resources](#resources)
+    - [Shared preferences](#shared-preferences)
     - Smali
-    - Strings
+    - [Strings](#strings)
 2. [Criptografia](criptografia/index)
     - Not a caesar algorithm
 3. [Forense](forense/index)
@@ -91,6 +91,9 @@ O desafio resources, similar ao file access, também só precisa do apk renomead
 Para o desafio shared preferences ser resolvido, precisei do APP rodando em VM, no ambiente do [Android Studio](#android-studio) e então bastou abrir a View 'Device File Explorer' e acessar o arquivo data/data/com.revo.evabs/shared_prefs/DETAILS.xml (ele só é criado após a execução do app pelo menos uma vez e atribuição do nome na primeira tela)
 ![Shared preferences is not safe](https://github.com/leoplana/ctf-zup-2020/blob/master/android/shared-preferences.png)
 
+### Strings
+Com o APK já decompilado, após fazer uso da ferramenta [APK Decompilers](#apk-decompilers) bastou abrir o arquivo disponível em res\values\strings.xml
+![Strings.xml](https://github.com/leoplana/ctf-zup-2020/blob/master/android/strings.png)
 
 ## Criptografia :key:
 
