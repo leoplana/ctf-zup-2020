@@ -49,6 +49,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 ## Android :iphone: ##
 
 ### Debug me
+O desafio debug pede para que seja exibida uma flag que foi logada pela aplicação, e portanto foi necessário apenas executar o APK em uma máquina virtual e atrelar o dispositivo/apk ao logcat no [Android Studio](#android-studio), vendo o filtro marcado com debug e acionar o botao para "debug" na activity do desafio, dentro do app.
 
 ## Criptografia :key:
 
@@ -60,3 +61,9 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 
 ## Aplicações Web :globe_with_meridians:
 
+
+
+# Ferramentas #
+
+### Android Studio ###
+IDE para desenvolvimento Android disponível neste [link](https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
