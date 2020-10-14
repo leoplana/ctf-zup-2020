@@ -79,22 +79,65 @@ Para concluir este desafio basta renomear a APK para .zip e acessar a pasta de a
 ![Assets in renamed apk](https://github.com/leoplana/ctf-zup-2020/blob/master/android/assets.png)
 
 ### Dynamic instrumentation
-Este desafio trata de algum recurso do Android que eu até então desconhecia. Mas será que seria mesmo necessário conhecê-lo para ter acesso à nossa flag?
+Este desafio certamente trata de algum conceito do Android e/ou Mobile em geral. Mas será que seria mesmo necessário conhecê-lo para ter acesso à nossa flag?
 Com o APK já decompilado, procurei pela Activity do desafio e a encontrei em com.revo.evabs.Frida1.java e vi o trecho relevante para a nossa busca
 
 ```Java
-if (this.x > rand) {
-            tv.setText("VIBRAN IS RESDY TO FLY! YOU ARE GOING HOME!");
-            Log.d("CONGRATZ!", stringFromJNI());
-            return;
-   }
+public class Frida1 extends AppCompatActivity implements OnClickListener {
+    int a = 25;
+    int b = 2;
+    int x;
+    public native String stringFromJNI();
+    ...
+    if (this.x > rand) {
+        tv.setText("VIBRAN IS RESDY TO FLY! YOU ARE GOING HOME!");
+        Log.d("CONGRATZ!", stringFromJNI());
+        return;
+    }
+    ...
+    static {
+        System.loadLibrary("native-lib");
+    }
+}
 ```
 
-E então percebi que bastaria executar o método stringFromJNI() em um contexto qualquer que teria acesso à flag. Aí entra uma grande descoberta, esse é um método nativo, invocado a partir de um compilado de nome native-libs.so disponível na pasta \lib\x86. Isso significa que não temos acesso ao código, certo? 
-Bem, na verdade os métodos definidos podem ser acessados desde que a classe que esteja invocando tenha o mesmo nome e estrutura de pacote (JNI)
-Criei então um projeto hello world simples no [Android Studio](#android-studio) e transformei a minha HelloWorldActivity.java em Frida1.java, adicionando também a nossa native-libs.so nesse projeto e definindo o mesmo método nativo stringFromJNI()
+E então descubro que a flag vem do método stringFromJNI() e que bastaria executá-lo para ter acesso a flag, mas o que é ele? 
+Ao estudar um pouco sobre, descubro que o código que implementa stringFromJNI na verdade está contido no arquivo \lib\x86\libnative-lib.so mas ao abrí-lo não é possível ler nada. Isso significa que não temos acesso ao código, certo? 
+Bem, na verdade os métodos definidos podem ser acessados desde que a classe que esteja invocando tenha o mesmo nome e estrutura de pacote (JNI) definido na lib.
+Criei então um projeto hello world simples no [Android Studio](#android-studio) e transformei a minha "HelloWorldActivity.java" em "Frida1.java", adicionando também a nossa native-libs.so nesse projeto e definindo o mesmo método nativo stringFromJNI(), basta rodar e ver a flag sendo printada no logcat!
 
-![Assets in renamed apk](https://github.com/leoplana/ctf-zup-2020/blob/master/android/assets.png)
+![Who needs instrumenwhatever](https://github.com/leoplana/ctf-zup-2020/blob/master/android/instrumentation.png)
+
+### Smali
+A Activity deste desafio nos diz que uma variável precisa ser atualizada e o app recompilado, para que a flag seja exibida. Ao acessar sua Activity, novamente vejo que a flag está, na realidade, também no arquivo native-libs.so
+
+```Java
+public class SmaliInject extends AppCompatActivity {
+    String SIGNAL = "LAB_OFF";
+    public native String stringFromSmali();
+    ...
+    public void onCreate(Bundle savedInstanceState) {
+        ...
+            String ctrl = SmaliInject.this.stringFromSmali();
+            if (SmaliInject.this.SIGNAL.equals("LAB_ON")) {
+                StringBuilder sb = new StringBuilder();
+                sb.append("ZUP-{");
+                sb.append(ctrl);
+                sb.append("}");
+                textView.setText(sb.toString());
+            }
+        ...
+    }
+    static {
+        System.loadLibrary("native-lib");
+    }
+}
+```
+Aproveitando a solução feita no desafio [Dynamic Instrumentation](#dynamic-instrumentation), renomeei a "HelloWorldActivity.java" para "SmaliInject.java"
+e defini o mesmo método nativo stringFromSmali(), rodei e vi a flag sendo printada no logcat, novamente!
+
+![Who needs to recompile](https://github.com/leoplana/ctf-zup-2020/blob/master/android/smali.png)
+
 
 ### Intercept
 O desafio intercept cita que há um request sendo feito toda vez que acionamos um determinado botão do app. Estando com o APP rodando em VM, no ambiente do [Android Studio](#android-studio) basta abrir a View 'Profiler' da IDE e criar uma sessão atrelada ao dispositivo virtual (vm) e ao processo (nosso apk). Esse recurso começa então a monitorar tanto os pacotes enviados quanto cpu, energia e memória do aparelho (vm). Logo ao acionar o botão para executar o request este pode ser visto em detalhes na IDE.
