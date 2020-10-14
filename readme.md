@@ -7,8 +7,8 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 ### Categorias
 1. [Android](#MultiMarkdownOverview)
     - [Debug](#debug-me)
-    - Decode
-    - Db leak
+    - [Decode](#decode)
+    - [Db leak](#db-leak)
     - Export
     - File access
     - Frida1
@@ -50,6 +50,16 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 
 ### Debug me
 O desafio debug pede para que seja exibida uma flag que foi logada pela aplicação, e portanto foi necessário apenas executar o APK em uma máquina virtual e atrelar o dispositivo/apk ao logcat no [Android Studio](#android-studio), vendo o filtro marcado com debug e acionar o botao para "debug" na activity do desafio, dentro do app.
+![Android Studio Log](https://github.com/leoplana/ctf-zup-2020/blob/master/android/debug-me.png)
+
+
+### Decode
+O desafio decode indica que o APK deve ser decompilado pois a flag foi compilada junto ao código. Para decompilar o APK de maneira mais fácil possível utilizei uma ferramenta online chamada [APK Decompilers](#apk-decompilers) e então bastou abrir o arquivo Decode.java e lá estava a nossa flag, dividida em três trechos de base64, que juntos formam o valor WlVQLXtoMHU1MyAwZiBjNHJkNX0= ou ZUP-{h0u53 0f c4rd5}
+![Decode.java](https://github.com/leoplana/ctf-zup-2020/blob/master/android/decode.png)
+
+### Db Leak
+O desafio db leak indica que há uma chave escondida dentro do banco de dados do APP. Estando o app rodando numa VM em execução no [Android Studio](#android-studio), basta abrir a View "Device File Explorer" e acessar a pasta data/data/com.revo.evabs/databases e copiar o arquivo mainframe_access. Ao abrir este arquivo com a ferramenta [SQLite Browser](#sqlite-browser) foi possivel visualizar a chave, dentro do aba de dados
+![Decode.java](https://github.com/leoplana/ctf-zup-2020/blob/master/android/db-leak.png)
 
 ## Criptografia :key:
 
@@ -67,3 +77,7 @@ O desafio debug pede para que seja exibida uma flag que foi logada pela aplicaç
 
 ### Android Studio ###
 IDE para desenvolvimento Android disponível neste [link](https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
+### APK Decompilers ###
+Ferramenta online para decompilar apks disponível [em](https://www.apkdecompilers.com/)
+### SQLite Browser ###
+Ferramenta para visualizar arquivos SQLite disponível [em](https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
