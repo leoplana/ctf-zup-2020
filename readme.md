@@ -18,7 +18,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Smali Inject](#smali)
     - [Strings](#strings)
 2. [Criptografia](criptografia/index)
-    - Not a caesar algorithm
+    - [Not a caesar algorithm](#not-a-caesar-algorithm)
 3. [Forense](forense/index)
     - Pdf crypt
     - A lost pendrive
@@ -157,6 +157,7 @@ Com o APK já decompilado, após fazer uso da ferramenta [APK Decompilers](#apk-
 
 ## Criptografia :key:
 
+### Not a caesar algorithm ##
 Esse desafio nos dá uma flag aparentemente criptografada e a única dica é que não se trata de um algoritmo de cifra de césar. Fazendo uso da ferramenta online [Dcode.fr](#dcode) e testando alguns algoritmos através de força bruta, em pouco tempo foi possível descobrir que se tratava do algoritmo Affine.
 ![dCode rules](https://github.com/leoplana/ctf-zup-2020/blob/master/crypt/affine.png)
 
