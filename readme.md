@@ -5,7 +5,7 @@ Este documento contém todas as respostas (passo a passo) e ferramentas utilizad
 dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :rofl:
 
 ### Categorias
-1. [Android](#MultiMarkdownOverview)
+1. [Android](#debug-me)
     - [Debug](#debug-me)
     - [Decode](#decode)
     - [Db leak](#db-leak)
