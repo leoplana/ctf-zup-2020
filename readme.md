@@ -6,7 +6,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 
 ### Categorias
 1. [Android](#MultiMarkdownOverview)
-    - Debug(#debug-me)
+    - [Debug](#debug-me)
     - Decode
     - Db leak
     - Export
@@ -46,7 +46,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - Server status (SSRF)
     - Unsafe Entity (XXE)
 
-## Android [MultiMarkdownOverview] :iphone: ##
+## Android :iphone: ##
 
 ### Debug me
 
