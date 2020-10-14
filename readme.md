@@ -72,7 +72,7 @@ Com o app em execução e fazendo uso da ferramenta [ADB/SDK Platform Tools](#ad
 ```shell
 adb shell am start -n com.revo.evabs/com.revo.evabs.ExportedActivity
 ```
-![Starting activity](https://github.com/leoplana/ctf-zup-2020/blob/master/android/exported.png)
+![Starting activity](https://github.com/leoplana/ctf-zup-2020/blob/master/android/export.png)
 
 ### File access
 Para concluir este desafio basta renomear a APK para .zip e acessar a pasta de assets, dentro desta está o arquivo secret que pode ser aberto com o notepad para encontrar a nossa flag.
