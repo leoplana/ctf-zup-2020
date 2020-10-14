@@ -11,7 +11,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Db leak](#db-leak)
     - [Export](#exported)
     - [File access](#file-access)
-    - Frida1
+    - [Dynamic Instrumentation](#dynamic-instrumentation)
     - [Intercept](#intercept)
     - [Resources](#resources)
     - [Shared preferences](#shared-preferences)
@@ -78,6 +78,23 @@ adb shell am start -n com.revo.evabs/com.revo.evabs.ExportedActivity
 Para concluir este desafio basta renomear a APK para .zip e acessar a pasta de assets, dentro desta está o arquivo secret que pode ser aberto com o notepad para encontrar a nossa flag.
 ![Assets in renamed apk](https://github.com/leoplana/ctf-zup-2020/blob/master/android/assets.png)
 
+### Dynamic instrumentation
+Este desafio trata de algum recurso do Android que eu até então desconhecia. Mas será que seria mesmo necessário conhecê-lo para ter acesso à nossa flag?
+Com o APK já decompilado, procurei pela Activity do desafio e a encontrei em com.revo.evabs.Frida1.java e vi o trecho relevante para a nossa busca
+
+```Java
+if (this.x > rand) {
+            tv.setText("VIBRAN IS RESDY TO FLY! YOU ARE GOING HOME!");
+            Log.d("CONGRATZ!", stringFromJNI());
+            return;
+   }
+```
+
+E então percebi que bastaria executar o método stringFromJNI() em um contexto qualquer que teria acesso à flag. Aí entra uma grande descoberta, esse é um método nativo, invocado a partir de um compilado de nome native-libs.so disponível na pasta \lib\x86. Isso significa que não temos acesso ao código, certo? 
+Bem, na verdade os métodos definidos podem ser acessados desde que a classe que esteja invocando tenha o mesmo nome e estrutura de pacote (JNI)
+Criei então um projeto hello world simples no [Android Studio](#android-studio) e transformei a minha HelloWorldActivity.java em Frida1.java, adicionando também a nossa native-libs.so nesse projeto e definindo o mesmo método nativo stringFromJNI()
+
+![Assets in renamed apk](https://github.com/leoplana/ctf-zup-2020/blob/master/android/assets.png)
 
 ### Intercept
 O desafio intercept cita que há um request sendo feito toda vez que acionamos um determinado botão do app. Estando com o APP rodando em VM, no ambiente do [Android Studio](#android-studio) basta abrir a View 'Profiler' da IDE e criar uma sessão atrelada ao dispositivo virtual (vm) e ao processo (nosso apk). Esse recurso começa então a monitorar tanto os pacotes enviados quanto cpu, energia e memória do aparelho (vm). Logo ao acionar o botão para executar o request este pode ser visto em detalhes na IDE.
