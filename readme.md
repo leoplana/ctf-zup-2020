@@ -22,7 +22,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 3. [Forense](forense/index)
     - [Pdf crypt](#pdf-crypt)
     - [A lost pendrive](#lost-pendrive)
-    - Unk
+    - [Unk](#unk)
 4. [Misc](misc/index)
     - Access log
     - Rotate
@@ -171,7 +171,12 @@ Este desafio se trata de um arquivo pdf criptografado e com senha para acesso. P
 Este desafio disponibliza um arquivo zip de aprox 25MB e fala que é proveniente de um pendrive achado na rua... Ao abrir o arquivo no winrar é possível ver que o conteúdo é um arquivo sem extensão alguma, e com quase 4GB de tamanho *(?)*. Após achar bastante suspeito abro este arquivo com o editor Hexadecimal [HxD](#hxd) e vejo vários trechos nulos
 ![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/hex-lost-pendrive.png)
 Apago esses valores nulos (00) apenas para tornar o arquivo de mais fácil manipulação, com isso o seu tamanho real cai bastante (26mb pelo menos). Ainda no editor hexadecimal percebo alguns indícios de que esse arquivo é uma imagem, pois dentro dele existem vários arquivos e pastas. O renomeio para .bin e faço uso da ferramenta [OSF Mount](#osf-mount) para montar a imagem como uma unidade de disco, e lá dentro achamos nossa flag, dentro do rar passwords.txt.zip
-![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/hex-lost-pendrive.png)
+![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/mount-lost-pendrive.png)
+
+### Unk ###
+Esse desafio é um arquivo sem extensão alguma. Ao abrí-lo com o editor hexadecimal [HxD](#hxd) é possível ver algumas estruturas de um arquivo docx, arquivos xml comuns a esse tipo de arquivo. Bastou então renomear o arquivo para unk.docx e abrí-lo no Microsoft Word. O Word irá alertar que o arquivo contém informações ilegíveis e possibilita recuperar o documento automaticamente, e ele mesmo consegue fazer o trabalho.
+O nosso unk na verdade era mesmo um docx!
+![Unk file nice song](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/unk.png)
 
 ## Misc :earth_americas:
 
