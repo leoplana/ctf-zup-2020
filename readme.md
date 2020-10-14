@@ -157,6 +157,9 @@ Com o APK já decompilado, após fazer uso da ferramenta [APK Decompilers](#apk-
 
 ## Criptografia :key:
 
+Esse desafio nos dá uma flag aparentemente criptografada e a única dica é que não se trata de um algoritmo de cifra de césar. Fazendo uso da ferramenta online [Dcode.fr](#dcode) e testando alguns algoritmos através de força bruta, em pouco tempo foi possível descobrir que se tratava do algoritmo Affine.
+![dCode rules](https://github.com/leoplana/ctf-zup-2020/blob/master/crypt/affine.png)
+
 ## Forense :mag:
 
 ## Misc :earth_americas:
@@ -177,3 +180,5 @@ Ferramenta online para decompilar apks disponível [em](https://www.apkdecompile
 Ferramenta para visualizar arquivos SQLite disponível [em](https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
 ### ADB ###
 Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
+### dCode ###
+Ferramenta online para decriptografia com vários algoritmos disponíveis bem como força bruta, disponível [em](https://www.dcode.fr/)
