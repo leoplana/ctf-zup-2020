@@ -15,7 +15,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Intercept](#intercept)
     - [Resources](#resources)
     - [Shared preferences](#shared-preferences)
-    - Smali
+    - [Smali Inject](#smali)
     - [Strings](#strings)
 2. [Criptografia](criptografia/index)
     - Not a caesar algorithm
