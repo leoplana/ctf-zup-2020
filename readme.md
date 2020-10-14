@@ -9,7 +9,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Debug](#debug-me)
     - [Decode](#decode)
     - [Db leak](#db-leak)
-    - [Export](#export)
+    - [Export](#exported)
     - [File access](#file-access)
     - Frida1
     - [Intercept](#intercept)
