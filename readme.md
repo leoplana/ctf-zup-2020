@@ -5,7 +5,7 @@ Este documento contém todas as respostas (passo a passo) e ferramentas utilizad
 dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :rofl:
 
 ### Categorias
-1. [Android](#Android)
+1. [Android](#android-section)
     - Debug(#debug-me)
     - Decode
     - Db leak
@@ -46,9 +46,9 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - Server status (SSRF)
     - Unsafe Entity (XXE)
 
-## Android
-:iphone:
-### [Debug me]
+## Android [android section] :iphone:
+
+### Debug me
 
 ## Criptografia :key:
 
