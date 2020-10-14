@@ -74,6 +74,23 @@ adb shell am start -n com.revo.evabs/com.revo.evabs.ExportedActivity
 ```
 ![Starting activity](https://github.com/leoplana/ctf-zup-2020/blob/master/android/exported.png)
 
+### File access
+Para concluir este desafio basta renomear a APK para .zip e acessar a pasta de assets, dentro desta está o arquivo secret que pode ser aberto com o notepad para encontrar a nossa flag.
+![Assets in renamed apk](https://github.com/leoplana/ctf-zup-2020/blob/master/android/assets.png)
+
+
+### Intercept
+O desafio intercept cita que há um request sendo feito toda vez que acionamos um determinado botão do app. Estando com o APP rodando em VM, no ambiente do [Android Studio](#android-studio) basta abrir a View 'Profiler' da IDE e criar uma sessão atrelada ao dispositivo virtual (vm) e ao processo (nosso apk). Esse recurso começa então a monitorar tanto os pacotes enviados quanto cpu, energia e memória do aparelho (vm). Logo ao acionar o botão para executar o request este pode ser visto em detalhes na IDE.
+![Request interception](https://github.com/leoplana/ctf-zup-2020/blob/master/android/request-interception.png)
+
+### Resources
+O desafio resources, similar ao file access, também só precisa do apk renomeado para a extensão zip. Dessa forma basta acessar o diretório res/raw e lá está a flag.
+![Resources](https://github.com/leoplana/ctf-zup-2020/blob/master/android/resources.png)
+
+### Shared preferences
+Para o desafio shared preferences ser resolvido, precisei do APP rodando em VM, no ambiente do [Android Studio](#android-studio) e então bastou abrir a View 'Device File Explorer' e acessar o arquivo data/data/com.revo.evabs/shared_prefs/DETAILS.xml (ele só é criado após a execução do app pelo menos uma vez e atribuição do nome na primeira tela)
+![Shared preferences is not safe](https://github.com/leoplana/ctf-zup-2020/blob/master/android/shared-preferences.png)
+
 
 ## Criptografia :key:
 
