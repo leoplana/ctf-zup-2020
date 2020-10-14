@@ -20,8 +20,8 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 2. [Criptografia](criptografia/index)
     - [Not a caesar algorithm](#not-a-caesar-algorithm)
 3. [Forense](forense/index)
-    - Pdf crypt
-    - A lost pendrive
+    - [Pdf crypt](#pdf-crypt)
+    - [A lost pendrive](#lost-pendrive)
     - Unk
 4. [Misc](misc/index)
     - Access log
@@ -163,6 +163,16 @@ Esse desafio nos dá uma flag aparentemente criptografada e a única dica é que
 
 ## Forense :mag:
 
+### Pdf crypt ###
+Este desafio se trata de um arquivo pdf criptografado e com senha para acesso. Para acessá-lo foi tão simples quanto fazer uso da ferramenta online [IlovePDF](#ilovepdf)
+![Are encrypted pdf safe? I'm not sure anymore](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/pdf.png)
+
+### Lost pendrive ###
+Este desafio disponibliza um arquivo zip de aprox 25MB e fala que é proveniente de um pendrive achado na rua... Ao abrir o arquivo no winrar é possível ver que o conteúdo é um arquivo sem extensão alguma, e com quase 4GB de tamanho *(?)*. Após achar bastante suspeito abro este arquivo com o editor Hexadecimal [HxD](#hxd) e vejo vários trechos nulos
+![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/hex-lost-pendrive.png)
+Apago esses valores nulos (00) apenas para tornar o arquivo de mais fácil manipulação, com isso o seu tamanho real cai bastante (26mb pelo menos). Ainda no editor hexadecimal percebo alguns indícios de que esse arquivo é uma imagem, pois dentro dele existem vários arquivos e pastas. O renomeio para .bin e faço uso da ferramenta [OSF Mount](#osf-mount) para montar a imagem como uma unidade de disco, e lá dentro achamos nossa flag, dentro do rar passwords.txt.zip
+![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/hex-lost-pendrive.png)
+
 ## Misc :earth_americas:
 
 ## Pwns :computer:
@@ -183,3 +193,9 @@ Ferramenta para visualizar arquivos SQLite disponível [em](https://download.sql
 Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
 ### dCode ###
 Ferramenta online para decriptografia com vários algoritmos disponíveis bem como força bruta, disponível [em](https://www.dcode.fr/)
+### ILOVEPDF ###
+Ferramenta online que permite abrir pdfs criptografados, disponível no [link](#https://www.ilovepdf.com/unlock_pdf)
+### HXD ###
+Ferramenta de editor Hexadecimal disponível [em](#https://mh-nexus.de/downloads/HxDSetup.zip)
+### OSF Mount ###
+Ferramenta para montar imagem bin em um diso virtual, disponível [em](#https://www.osforensics.com/downloads/osfmount.exe)
