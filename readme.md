@@ -24,8 +24,8 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [A lost pendrive](#lost-pendrive)
     - [Unk](#unk)
 4. [Misc](misc/index)
-    - Access log
-    - Rotate
+    - [Log Access](#log-access)
+    - [Rotate](#rotate)
 5. [Pwns](pown/index)
     - Pwn1
     - Pwn2
@@ -180,6 +180,19 @@ O nosso unk na verdade era mesmo um docx!
 
 ## Misc :earth_americas:
 
+### Log Access ###
+Este desafio disponibliza um arquivo zip contendo um arquivo de texto com extensão .ctf. Ao abrir o arquivo na ferramenta [Notepad++](#notepad++) e analisar "no olho" (é um arquivo pequeno) na linha 110 do arquivo há o log de um request contendo um parâmetro bem extenso. Após analisar cheguei na função javascript abaixo
+
+```Javascript
+var revealLogAccess = (x) => eval(decodeURIComponent(x).replace(/(.*)(String\.fromCharCode\(.*\))(.*)/,"$2"))
+```
+que recebendo a url completa da linha 110 como parâmetro nos retorna a tão desejada flag 
+![Log access flag](https://github.com/leoplana/ctf-zup-2020/blob/master/misc/log-access.png)
+
+
+### Rotate ###
+Este desafio nos dá um texto cifrado, e também a dica de que ele foi rotacionado n e após y vezes. Bastou então fazer uso da ferramenta [dCode](#dCode) utilizando o recurso ROT Cipher(#https://www.dcode.fr/rot-cipher) e aplicando o número de rotações indicado no desafio para obter a flag final! 
+
 ## Pwns :computer:
 
 ## Aplicações Web :globe_with_meridians:
@@ -204,3 +217,5 @@ Ferramenta online que permite abrir pdfs criptografados, disponível no [link](#
 Ferramenta de editor Hexadecimal disponível [em](#https://mh-nexus.de/downloads/HxDSetup.zip)
 ### OSF Mount ###
 Ferramenta para montar imagem bin em um diso virtual, disponível [em](#https://www.osforensics.com/downloads/osfmount.exe)
+### Notepad++ ###
+Editor de texto preferido de alguns devs, disponível [em](#https://notepad-plus-plus.org/downloads/)
