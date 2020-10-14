@@ -4,7 +4,7 @@
 Este documento contém todas as respostas e ferramentas utilizadas para resolução dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :rofl:
 
 ### Categorias
-[Android](android/index)
+[Android](android/index.md)
 
 [Criptografia](criptografia/index)
 
