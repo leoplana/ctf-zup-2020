@@ -59,7 +59,7 @@ O desafio decode indica que o APK deve ser decompilado pois a flag foi compilada
 
 ### Db Leak
 O desafio db leak indica que há uma chave escondida dentro do banco de dados do APP. Estando o app rodando numa VM em execução no [Android Studio](#android-studio), basta abrir a View "Device File Explorer" e acessar a pasta data/data/com.revo.evabs/databases e copiar o arquivo mainframe_access. Ao abrir este arquivo com a ferramenta [SQLite Browser](#sqlite-browser) foi possivel visualizar a chave, dentro do aba de dados
-![Decode.java](https://github.com/leoplana/ctf-zup-2020/blob/master/android/db-leak.png)
+![DB Leak](https://github.com/leoplana/ctf-zup-2020/blob/master/android/db-leak.PNG)
 
 ## Criptografia :key:
 
