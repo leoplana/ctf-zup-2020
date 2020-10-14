@@ -61,6 +61,20 @@ O desafio decode indica que o APK deve ser decompilado pois a flag foi compilada
 O desafio db leak indica que há uma chave escondida dentro do banco de dados do APP. Estando o app rodando numa VM em execução no [Android Studio](#android-studio), basta abrir a View "Device File Explorer" e acessar a pasta data/data/com.revo.evabs/databases e copiar o arquivo mainframe_access. Ao abrir este arquivo com a ferramenta [SQLite Browser](#sqlite-browser) foi possivel visualizar a chave, dentro do aba de dados
 ![DB Leak](https://github.com/leoplana/ctf-zup-2020/blob/master/android/db-leak.PNG)
 
+### Exported
+Com o APK já decompilado, no desafio exported foi citado que havia uma activity escondida dentro do APP, que estava vulnerável por ser marcada como "exported". Dentro do Manifest.xml portanto foi possível ver o nome dessa activity, que era
+
+```xml
+<activity android:exported="true" android:name="com.revo.evabs.ExportedActivity"/>
+```
+Com o app em execução e fazendo uso da ferramenta [ADB/SDK Platform Tools](#adb) foi possível mandar executar esta activity com uma linha de comando
+
+```shell
+adb shell am start -n com.revo.evabs/com.revo.evabs.ExportedActivity
+```
+![Starting activity](https://github.com/leoplana/ctf-zup-2020/blob/master/android/exported.png)
+
+
 ## Criptografia :key:
 
 ## Forense :mag:
@@ -81,3 +95,5 @@ IDE para desenvolvimento Android disponível neste [link](https://redirector.gvt
 Ferramenta online para decompilar apks disponível [em](https://www.apkdecompilers.com/)
 ### SQLite Browser ###
 Ferramenta para visualizar arquivos SQLite disponível [em](https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
+### ADB ###
+Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
