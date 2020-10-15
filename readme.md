@@ -192,7 +192,7 @@ que recebendo a url completa da linha 110 como parâmetro nos retorna a tão des
 
 
 ### Rotate ###
-Este desafio nos dá um texto cifrado, e também a dica de que ele foi rotacionado n e após y vezes. Bastou então fazer uso da ferramenta [dCode](#dCode) utilizando o recurso ROT Cipher(#https://www.dcode.fr/rot-cipher) e aplicando o número de rotações indicado no desafio para obter a flag final! 
+Este desafio nos dá um texto cifrado, e também a dica de que ele foi rotacionado n e após y vezes. Bastou então fazer uso da ferramenta [dCode](#dCode) utilizando o recurso [ROT Cipher](https://www.dcode.fr/rot-cipher) e aplicando o número de rotações indicado no desafio para obter a flag final! 
 
 ## Pwns :computer:
 
@@ -401,7 +401,7 @@ Esse desafio nos apresenta uma página html com um javascript que tem como únic
 
 Esse desafio nos apresenta uma página bem simples com três links, um hello world, um formulário de dois inputs text e uma página de upload de arquivos.
 A nossa página de interesse é justamente a página de upload de arquivos. Tudo que é submetido ao servidor essa página printa de volta no corpo da resposta.
-Estudando um pouco sobre perl vejo o funcionamento da função que provavelmente é usada no codigo, já que sei que a página está trabalhando com leitura de arquivos. Descubro uma brecha que faz uso do [ARGV](#http://kentfredric.github.io/blog/2016/01/01/re-the-perl-jam-2-argv-is-evil/), e daí basicamente os próximos passos foram, fiz uso da ferramenta
+Estudando um pouco sobre perl vejo o funcionamento da função que provavelmente é usada no codigo, já que sei que a página está trabalhando com leitura de arquivos. Descubro uma brecha que faz uso do [ARGV](http://kentfredric.github.io/blog/2016/01/01/re-the-perl-jam-2-argv-is-evil/), e daí basicamente os próximos passos foram, fiz uso da ferramenta
 [Burp Suite](#burp-suite-community-edition), do recurso de interceptador.
 Abrindo a ferramenta acessamos o browser normalmente, porém habilitamos a opção 'interceptador' dentro da ferramenta. Faço então o request normalmente, enviado na url o nome do arquivo que eu suspeito ser o alvo/desejo abrir
 
@@ -438,7 +438,7 @@ E e mando o Burp deixar seguir o request agora alterado. Dessa forma o servidor 
 ### Potatoe is Good ###
 
 Este site nos exibe um formulário de login com apenas um campo username, dizendo que é apenas para usuários pré registrados.
-Abro logo a ferramenta OWASP ZAP 2.9.0](#owasp-zap) e mando executar uma varredura (essa funcionalidade testa, dentro de algumas outras coisas, injeções sql). Instantaneamente
+Abro logo a ferramenta [OWASP ZAP 2.9.0](#owasp-zap) e mando executar uma varredura (essa funcionalidade testa, dentro de algumas outras coisas, injeções sql). Instantaneamente
 é possível ver que o login foi feito com sucesso, e então continuo a navegação manualmente. Vejo uma página de listagem de batatas que nos provê a opção de filtrar pelo nome. Já sabendo que a página era vulnerável a SQL Injection segui então o passo a passo abaixo (após perceber em um erro printado pelo servidor que o banco usado é MySQL)
 
 ```html
