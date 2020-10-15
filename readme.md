@@ -435,7 +435,7 @@ Meutesteexploitperl
 
 E e mando o Burp deixar seguir o request agora alterado. Dessa forma o servidor me retorna, em vez do conteudo do arquivo exemplo.txt que eu submeti o conteúdo do arquivo flag, contido no próprio servidor remoto : ZUP-CTF{P3rl_6_iz_!!12} <3
 
-# Potatoe is Good #
+### Potatoe is Good ###
 
 Este site nos exibe um formulário de login com apenas um campo username, dizendo que é apenas para usuários pré registrados.
 Abro logo a ferramenta OWASP ZAP 2.9.0](#owasp-zap) e mando executar uma varredura (essa funcionalidade testa, dentro de algumas outras coisas, injeções sql). Instantaneamente
@@ -454,7 +454,7 @@ https://potatogods.zup.com.br/search?potatoes=blue%25%27 UNION  select flag as p
 ``` 
 E agora em vez de nos listar apenas batatas azuis o site nos lista também a flag <3
 
-# Server Status #
+### Server Status ###
 Este site nos exibe um formulário com apenas um campo, onde precisamos informar uma url,  e o site nos dá uma dica: "esse site faz requests/consegue ler códigos de outras páginas".
 
 Ao submeter um primeiro teste passando o site da google como parâmetro, o mesmo é retornado no corpo do nosso site vulnerável
@@ -470,7 +470,7 @@ URl : localhost:80/server-status
 //E aqui achamos nossa flag: ZUP-CTF{TH3_S_3r_v3r_is_UP}
 ``` 
 
-# XXE #
+### XXE ###
 Este desafio nos exibe um site com alguns menus, que trata basicamente de um sistema de cadastro de usuários. O título do desafio menciona 'entidade insegura', o nome da vulnerabilidade, bem como um menu do site nos conta o nome do arquivo desejado : "flag.txt".
 A brecha se encontra em uma página onde o servidor nos permite fazer o upload de um xml, e o servidor devolve na resposta esse mesmo xml printado no corpo.
 O que nós precisamos fazer então é definir uma entidade XML falsa, onde o seu valor é lido de um arquivo existente no servidor. Isso pode ser feito através do xml abaixo
