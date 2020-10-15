@@ -17,21 +17,21 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Shared preferences](#shared-preferences)
     - [Smali Inject](#smali)
     - [Strings](#strings)
-2. [Criptografia](criptografia/index)
+2. [Criptografia](#not-a-caesar-algorithm)
     - [Not a caesar algorithm](#not-a-caesar-algorithm)
-3. [Forense](forense/index)
+3. [Forense](#pdf-crypt)
     - [Pdf crypt](#pdf-crypt)
     - [A lost pendrive](#lost-pendrive)
     - [Unk](#unk)
-4. [Misc](misc/index)
+4. [Misc](#log-access)
     - [Log Access](#log-access)
     - [Rotate](#rotate)
-5. [Pwns](pown/index)
+5. [Pwns](#pwn1)
     - [Pwn1](#pwn1)
     - [Pwn2](#pwn2)
     - [Pwn3](#pwn3)
     - [Pwn4](#pwn4)
-6. [Aplicações Web](web/index)
+6. [Aplicações Web](#awesome-cats)
     - [Awesome cats](#awesome-cats)
     - [Login bypass](#login-bypass)
     - [Easy one](#easy-one)
@@ -45,6 +45,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Potatoe is good](#potatoe-is-good)
     - [Server status (SSRF)](#server-status)
     - [Unsafe Entity (XXE)](#xxe)
+7. [Ferramentas](#android-studio)
 
 ## Android :iphone: ##
 
@@ -510,7 +511,7 @@ Após navegar mais pelo site vejo que existe um outro atributo <intro> que não 
 E agora sim o servidor nos retorna nossa tão desejada flag! :D
 
 
-# Ferramentas #
+# Ferramentas :hammer: # 
 
 ### Android Studio ###
 IDE para desenvolvimento Android disponível neste [link](https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
