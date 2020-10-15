@@ -513,30 +513,30 @@ E agora sim o servidor nos retorna nossa tão desejada flag! :D
 # Ferramentas #
 
 ### Android Studio ###
-IDE para desenvolvimento Android disponível neste [link](#https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
+IDE para desenvolvimento Android disponível neste [link](https://redirector.gvt1.com/edgedl/android/studio/install/4.1.0.19/android-studio-ide-201.6858069-windows.exe) 
 ### APK Decompilers ###
-Ferramenta online para decompilar apks disponível [em](#https://www.apkdecompilers.com/)
+Ferramenta online para decompilar apks disponível [em](https://www.apkdecompilers.com/)
 ### SQLite Browser ###
-Ferramenta para visualizar arquivos SQLite disponível [em](#https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
+Ferramenta para visualizar arquivos SQLite disponível [em](https://download.sqlitebrowser.org/DB.Browser.for.SQLite-3.12.0-win64.msi)
 ### ADB ###
-Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](#https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
+Ferramenta cli para interagir/conectar com dispositivos Android via CMD disponível [em](https://dl.google.com/android/repository/platform-tools_r30.0.4-windows.zip)
 ### dCode ###
-Ferramenta online para decriptografia com vários algoritmos disponíveis bem como força bruta, disponível [em](#https://www.dcode.fr/)
+Ferramenta online para decriptografia com vários algoritmos disponíveis bem como força bruta, disponível [em](https://www.dcode.fr/)
 ### ILOVEPDF ###
-Ferramenta online que permite abrir pdfs criptografados, disponível no [link](#https://www.ilovepdf.com/unlock_pdf)
+Ferramenta online que permite abrir pdfs criptografados, disponível no [link](https://www.ilovepdf.com/unlock_pdf)
 ### HXD ###
-Ferramenta de editor Hexadecimal disponível [em](#https://mh-nexus.de/downloads/HxDSetup.zip)
+Ferramenta de editor Hexadecimal disponível [em](https://mh-nexus.de/downloads/HxDSetup.zip)
 ### OSF Mount ###
-Ferramenta para montar imagem bin em um diso virtual, disponível [em](#https://www.osforensics.com/downloads/osfmount.exe)
+Ferramenta para montar imagem bin em um diso virtual, disponível [em](https://www.osforensics.com/downloads/osfmount.exe)
 ### Notepad++ ###
-Editor de texto preferido de alguns devs, disponível [em](#https://notepad-plus-plus.org/downloads/)
+Editor de texto preferido de alguns devs, disponível [em](https://notepad-plus-plus.org/downloads/)
 ### Netcat ###
 Ferramenta de rede para conexões TCP/UDP, instalada em ambiente linux através do comando
 ```shell
 apt install netcat
 ```
 ### Online Disassembler ###
-Ferramenta online para visualizar as instruções de um arquivo ELF compilado disponível [em](#https://onlinedisassembler.com/odaweb/)
+Ferramenta online para visualizar as instruções de um arquivo ELF compilado disponível [em](https://onlinedisassembler.com/odaweb/)
 ### Python3 ###
 Versão do python utilizada instalada em ambiente linux através do comando abaixo
 ```shell
