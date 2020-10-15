@@ -388,4 +388,4 @@ Ferramenta muito robusta para pentest disponível [em](#https://github-productio
 ### Postman ###
 Ferramenta para realizar requests Restful/automações de chamadas de API's disponível [em](https://dl.pstmn.io/download/latest/win64)
 ### JS Fuck Decoder ###
-Ferramenta para desofuscar um javascript 'fuck' disponível online [em](https://enkhee-osiris.github.io/Decoder-JSFuck/)
+Ferramenta para desofuscar um javascript 'fuck' disponível online [em](https://enkhee-osiris.github.io/Decoder-JSFuck/){:target="_blank"}
