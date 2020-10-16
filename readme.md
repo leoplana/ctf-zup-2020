@@ -56,11 +56,11 @@ O desafio debug pede para que seja exibida uma flag que foi logada pela aplicaç
 
 ### Decode
 O desafio decode indica que o APK deve ser decompilado pois a flag foi compilada junto ao código. Para decompilar o APK de maneira mais fácil possível utilizei uma ferramenta online chamada [APK Decompilers](#apk-decompilers) e então bastou abrir o arquivo Decode.java e lá estava a nossa flag, dividida em três trechos de base64, que juntos formam o valor WlVQLXtoMHU1MyAwZiBjNHJkNX0= ou ZUP-{h0u53 0f c4rd5}
-![Decode.java](https://github.com/leoplana/ctf-zup-2020/blob/master/android/decode.png)
+![Decode.java](android/decode.png)
 
 ### Db Leak
 O desafio db leak indica que há uma chave escondida dentro do banco de dados do APP. Estando o app rodando numa VM em execução no [Android Studio](#android-studio), basta abrir a View "Device File Explorer" e acessar a pasta data/data/com.revo.evabs/databases e copiar o arquivo mainframe_access. Ao abrir este arquivo com a ferramenta [SQLite Browser](#sqlite-browser) foi possivel visualizar a chave, dentro do aba de dados
-![DB Leak](https://github.com/leoplana/ctf-zup-2020/blob/master/android/db-leak.PNG)
+![DB Leak](android/db-leak.PNG)
 
 ### Exported
 Com o APK já decompilado, no desafio exported foi citado que havia uma activity escondida dentro do APP, que estava vulnerável por ser marcada como "exported". Dentro do Manifest.xml portanto foi possível ver o nome dessa activity, que era
@@ -73,11 +73,11 @@ Com o app em execução e fazendo uso da ferramenta [ADB/SDK Platform Tools](#ad
 ```shell
 adb shell am start -n com.revo.evabs/com.revo.evabs.ExportedActivity
 ```
-![Starting activity](https://github.com/leoplana/ctf-zup-2020/blob/master/android/export.png)
+![Starting activity](android/export.png)
 
 ### File access
 Para concluir este desafio basta renomear a APK para .zip e acessar a pasta de assets, dentro desta está o arquivo secret que pode ser aberto com o notepad para encontrar a nossa flag.
-![Assets in renamed apk](https://github.com/leoplana/ctf-zup-2020/blob/master/android/assets.png)
+![Assets in renamed apk](android/assets.png)
 
 ### Dynamic instrumentation
 Este desafio certamente trata de algum conceito do Android e/ou Mobile em geral. Mas será que seria mesmo necessário conhecê-lo para ter acesso à nossa flag?
@@ -107,7 +107,7 @@ Ao estudar um pouco sobre, descubro que o código que implementa stringFromJNI n
 Bem, na verdade os métodos definidos podem ser acessados desde que a classe que esteja invocando tenha o mesmo nome e estrutura de pacote (JNI) definido na lib.
 Criei então um projeto hello world simples no [Android Studio](#android-studio) e transformei a minha "HelloWorldActivity.java" em "Frida1.java", adicionando também a nossa native-libs.so nesse projeto e definindo o mesmo método nativo stringFromJNI(), basta rodar e ver a flag sendo printada no logcat!
 
-![Who needs instrumenwhatever](https://github.com/leoplana/ctf-zup-2020/blob/master/android/instrumentation.png)
+![Who needs instrumenwhatever](android/instrumentation.png)
 
 ### Smali
 A Activity deste desafio nos diz que uma variável precisa ser atualizada e o app recompilado, para que a flag seja exibida. Ao acessar sua Activity, novamente vejo que a flag está, na realidade, também no arquivo native-libs.so
@@ -137,47 +137,47 @@ public class SmaliInject extends AppCompatActivity {
 Aproveitando a solução feita no desafio [Dynamic Instrumentation](#dynamic-instrumentation), renomeei a "HelloWorldActivity.java" para "SmaliInject.java"
 e defini o mesmo método nativo stringFromSmali(), rodei e vi a flag sendo printada no logcat, novamente!
 
-![Who needs to recompile](https://github.com/leoplana/ctf-zup-2020/blob/master/android/smali.png)
+![Who needs to recompile](android/smali.png)
 
 
 ### Intercept
 O desafio intercept cita que há um request sendo feito toda vez que acionamos um determinado botão do app. Estando com o APP rodando em VM, no ambiente do [Android Studio](#android-studio) basta abrir a View 'Profiler' da IDE e criar uma sessão atrelada ao dispositivo virtual (vm) e ao processo (nosso apk). Esse recurso começa então a monitorar tanto os pacotes enviados quanto cpu, energia e memória do aparelho (vm). Logo ao acionar o botão para executar o request este pode ser visto em detalhes na IDE.
-![Request interception](https://github.com/leoplana/ctf-zup-2020/blob/master/android/request-interception.png)
+![Request interception](android/request-interception.png)
 
 ### Resources
 O desafio resources, similar ao file access, também só precisa do apk renomeado para a extensão zip. Dessa forma basta acessar o diretório res/raw e lá está a flag.
-![Resources](https://github.com/leoplana/ctf-zup-2020/blob/master/android/resources.png)
+![Resources](android/resources.png)
 
 ### Shared preferences
 Para o desafio shared preferences ser resolvido, precisei do APP rodando em VM, no ambiente do [Android Studio](#android-studio) e então bastou abrir a View 'Device File Explorer' e acessar o arquivo data/data/com.revo.evabs/shared_prefs/DETAILS.xml (ele só é criado após a execução do app pelo menos uma vez e atribuição do nome na primeira tela)
-![Shared preferences is not safe](https://github.com/leoplana/ctf-zup-2020/blob/master/android/shared-preferences.png)
+![Shared preferences is not safe](android/shared-preferences.png)
 
 ### Strings
 Com o APK já decompilado, após fazer uso da ferramenta [APK Decompilers](#apk-decompilers) bastou abrir o arquivo disponível em res\values\strings.xml
-![Strings.xml](https://github.com/leoplana/ctf-zup-2020/blob/master/android/strings.png)
+![Strings.xml](android/strings.png)
 
 ## Criptografia :key:
 
 ### Not a caesar algorithm ##
 Esse desafio nos dá uma flag aparentemente criptografada e a única dica é que não se trata de um algoritmo de cifra de césar. Fazendo uso da ferramenta online [Dcode.fr](#dcode) e testando alguns algoritmos através de força bruta, em pouco tempo foi possível descobrir que se tratava do algoritmo Affine.
-![dCode rules](https://github.com/leoplana/ctf-zup-2020/blob/master/crypt/affine.png)
+![dCode rules](crypt/affine.png)
 
 ## Forense :mag:
 
 ### Pdf crypt ###
 Este desafio se trata de um arquivo pdf criptografado e com senha para acesso. Para acessá-lo foi tão simples quanto fazer uso da ferramenta online [IlovePDF](#ilovepdf)
-![Are encrypted pdf safe? I'm not sure anymore](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/pdf.png)
+![Are encrypted pdf safe? I'm not sure anymore](forensics/pdf.png)
 
 ### Lost pendrive ###
 Este desafio disponibliza um arquivo zip de aprox 25MB e fala que é proveniente de um pendrive achado na rua... Ao abrir o arquivo no winrar é possível ver que o conteúdo é um arquivo sem extensão alguma, e com quase 4GB de tamanho *(?)*. Após achar bastante suspeito abro este arquivo com o editor Hexadecimal [HxD](#hxd) e vejo vários trechos nulos
-![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/hex-lost-pendrive.png)
+![Lost pendrive looks bigger than it is](forensics/hex-lost-pendrive.png)
 Apago esses valores nulos (00) apenas para tornar o arquivo de mais fácil manipulação, com isso o seu tamanho real cai bastante (26mb pelo menos). Ainda no editor hexadecimal percebo alguns indícios de que esse arquivo é uma imagem, pois dentro dele existem vários arquivos e pastas. O renomeio para .bin e faço uso da ferramenta [OSF Mount](#osf-mount) para montar a imagem como uma unidade de disco, e lá dentro achamos nossa flag, dentro do rar passwords.txt.zip
-![Lost pendrive looks bigger than it is](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/mount-lost-pendrive.png)
+![Lost pendrive looks bigger than it is](forensics/mount-lost-pendrive.png)
 
 ### Unk ###
 Esse desafio é um arquivo sem extensão alguma. Ao abrí-lo com o editor hexadecimal [HxD](#hxd) é possível ver algumas estruturas de um arquivo docx, arquivos xml comuns a esse tipo de arquivo. Bastou então renomear o arquivo para unk.docx e abrí-lo no Microsoft Word. O Word irá alertar que o arquivo contém informações ilegíveis e possibilita recuperar o documento automaticamente, e ele mesmo consegue fazer o trabalho.
 O nosso unk na verdade era mesmo um docx!
-![Unk file nice song](https://github.com/leoplana/ctf-zup-2020/blob/master/forensics/unk.png)
+![Unk file nice song](forensics/unk.png)
 
 ## Misc :earth_americas:
 
@@ -188,7 +188,7 @@ Este desafio disponibliza um arquivo zip contendo um arquivo de texto com extens
 var revealLogAccess = (x) => eval(decodeURIComponent(x).replace(/(.*)(String\.fromCharCode\(.*\))(.*)/,"$2"))
 ```
 que recebendo a url completa da linha 110 como parâmetro nos retorna a tão desejada flag 
-![Log access flag](https://github.com/leoplana/ctf-zup-2020/blob/master/misc/log-access.png)
+![Log access flag](misc/log-access.png)
 
 
 ### Rotate ###
@@ -205,7 +205,7 @@ Se trata de um comando da ferramenta [netcat](#netcat), ao executar é possível
 que este arquivo é um executável e que o servidor indicado está rodando este mesmo arquivo. Agora como descobrir o funcionamento dele?
 A ferramenta utilizada foi a [OnlineDisassembler](#online-disassembler) para abrir esse arquivo, e então temos que na imagem abaixo é possível ver a condicional necessária
 para a execução da função 'print_flag' que provavelmente é a nossa função desejada.
-![Log access flag](https://github.com/leoplana/ctf-zup-2020/blob/master/pwn/pwn1-step1.png)
+![Log access flag](pwn/pwn1-step1.png)
 Para fazer essa condicional ser atingida (o valor informado à esquerda também ser atribuído o hexa 0xDEA110C8 precisamos causar um buffer overflow)
 
 O código em Python abaixo foi executado utilizando o [Python3](#python3) em um ambiente linux no [docker](#docker) e realiza exatamente esse trabalho, 
@@ -235,7 +235,7 @@ nc 18.228.166.40 4322
 ```
 Ao analisar o código executável pelo site [OnlineDisassembler](#online-disassembler) é possível ver uma função de nome 'select_func', que é chamada dentro da função main.
 E também é possível ver a nossa função de nome print_flag, homônima à nossa função do desafio anterior.
-![Desired function](https://github.com/leoplana/ctf-zup-2020/blob/master/pwn/pwn2-step1.png)
+![Desired function](pwn/pwn2-step1.png)
 Dado que temos o endereço da função que desejamos executar, basta fazer o overflow e atribuir esse endereço para que select_func chame ela para nós.
 O código em shell abaixo faz esse trabalho
 
@@ -285,7 +285,7 @@ if __name__ == '__main__':
 ```
 
 E como resultado agora temos acesso ao sh no servidor remoto, bastando então executar o cat flag.txt (o exemplo abaixo mostra um print em execução localhost)
-![Pwn 3 on localhost](https://github.com/leoplana/ctf-zup-2020/blob/master/pwn/pwn3-step1.png)
+![Pwn 3 on localhost](pwn/pwn3-step1.png)
 
 
 ### Pwn4 ###
