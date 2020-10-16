@@ -51,7 +51,7 @@ dos desafios do CTF Zup 2020, ou pelo menos aqueles que eu consegui resolver :ro
 
 ### Debug me
 O desafio debug pede para que seja exibida uma flag que foi logada pela aplicação, e portanto foi necessário apenas executar o APK em uma máquina virtual e atrelar o dispositivo/apk ao logcat no [Android Studio](#android-studio), vendo o filtro marcado com debug e acionar o botao para "debug" na activity do desafio, dentro do app.
-![Android Studio Log](https://github.com/leoplana/ctf-zup-2020/blob/master/android/debug-me.png)
+![Android Studio Log](/android/debug-me.png)
 
 
 ### Decode
